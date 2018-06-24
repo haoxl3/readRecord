@@ -18,7 +18,7 @@ export default {
       navigationBarTitleText: '图书记录',
       navigationBarTextStyle: 'light'
     },
-    "tabBar": {
+    'tabBar': {
       selectedColor: '#EA5148',
       list: [
         {
