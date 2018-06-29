@@ -18,13 +18,19 @@ export default {
     },
     methods: {
         async getList() {
+            wx.showNavigationBarLoading()
             const books = await get('/weapp/booklist')
-            // this.books = books.list
+            this.books = books.list
+            wx.stopPullDownRefresh()
+            wx.hideNavigationBarLoading()
             console.log('books')
             console.log(books)
         }
     },
-    created() {
+    onPullDownRefresh() {
+        this.getList()
+    },
+    mounted() {
         this.getList()
     }
 }
