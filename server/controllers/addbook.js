@@ -1,9 +1,22 @@
 const https = require('https')
+//获取mysql在当前环境下实例
+const {mysql} = require('../qcloud')
 // 新增图书
-// 2.入库
 module.exports = async (ctx) => {
     const {isbn, openid} = ctx.request.body
     if(isbn && openid) {
+        // 读取书码后先从数据库查询看是否已存过
+        const findRes = await mysql('books').select().where('isbn', isbn)
+        console.log('findRes='+findRes)
+        if(findRes.length) {
+            ctx.state = {
+                code: -1,
+                data: {
+                    msg: '图书已存在'
+                }
+            }
+            return
+        }
         // 1.获取豆瓣信息
         //https://developers.douban.com/wiki/?title=book_v2#get_isbn_book
         let url = 'https://api.douban.com/v2/book/isbn/'+isbn
@@ -14,10 +27,25 @@ module.exports = async (ctx) => {
             return `${v.title} ${v.count}`
         }).join(',')
         const author = bookinfo.author.join(',')
-        console.log({
-            rate,title,image,alt,publisher,summary,price,tags,author
-        })
-        console.log(bookinfo)
+        // 2.入库,将数据存到books表中
+        try{
+            await mysql('books').insert({
+                isbn,openid,title,image,alt,publisher,summary,price,rate,tags,author
+            })
+            console.log('come in try')
+            ctx.state.data = {
+                title,
+                msg: 'insert success'
+            }
+        }catch(e){
+            console.log('come in catch')
+            ctx.state = {
+                code: -1,
+                data: {
+                    msg: '新增失败：'+e.sqlMessage
+                }
+            }
+        }
     }
 }
 

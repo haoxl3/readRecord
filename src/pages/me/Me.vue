@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import {get, post, showSuccess} from '@/util'
+import {get, post, showSuccess, showModal} from '@/util'
 import qcloud from 'wafer2-client-sdk/index.js'
 import config from '@/config'
 import YearProgress from '@/components/YearProgress'
@@ -33,15 +33,11 @@ export default {
                 isbn,
                 openid: this.userinfo.openId
             })
-            if(res.code == 0 && res.data.title) {
-                showSuccess('添加成功',`${res.data.title}添加成功`)
-            }
+            showModal('添加成功',`${res.title}添加成功`)
         },
         scanBook() {
             wx.scanCode({
                 success: (res) => {
-                    console.log('scan success')
-                    console.log(res)
                     if(res.result) {
                         this.addBook(res.result)
                     }
@@ -85,9 +81,12 @@ export default {
             }
         }
     },
-    // created() {
-    //     this.userinfo = wx.getStorageSync('userinfo')
-    // }
+    onShow() {
+        let userinfo = wx.getStorageSync('userinfo')
+        if(userinfo){
+            this.userinfo = userinfo
+        }
+    }
 }
 </script>
 <style lang="scss">
