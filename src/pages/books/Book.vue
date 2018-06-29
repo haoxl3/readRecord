@@ -1,6 +1,6 @@
 <template>
     <div>
-        books={{books}}
+        <TopSwiper :tops='tops'></TopSwiper>
         <Card v-for="book in books" :book="book" :key="book.id">{{book.title}}</Card>
         <p class="text-footer" v-if="!more">没有更多数据</p>
     </div>
@@ -8,6 +8,7 @@
 <script>
 import {get} from '@/util'
 import Card from '@/components/Card'
+import TopSwiper from '@/components/TopSwiper'
 export default {
     data() {
         return {
@@ -18,7 +19,8 @@ export default {
         }
     },
     components: {
-        Card
+        Card,
+        TopSwiper
     },
     methods: {
         async getList(init) {

@@ -35,6 +35,15 @@ export default {
         detailUrl() {
             return '/pages/detail/main?id=' + this.book.id
         }
+    },
+    methods: {
+        preview() {
+            // 点击图片放大预览
+            wx.previewImage({
+                current: this.book.img,
+                urls: [this.book.image]
+            })
+        }
     }
 }
 </script>
