@@ -31,6 +31,11 @@ export default {
     components:{
         Rate
     },
+    computed: {
+        detailUrl() {
+            return '/pages/detail/main?id=' + this.book.id
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

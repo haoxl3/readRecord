@@ -35,5 +35,7 @@ router.get('/demo',controllers.demo)
 // 项目所用接口
 router.post('/addbook',controllers.addbook)
 router.get('/booklist', controllers.booklist)
+router.get('/bookdetail', controllers.bookdetail)
+router.get('/top', controllers.top)
 
 module.exports = router
