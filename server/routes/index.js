@@ -32,6 +32,8 @@ router.get('/message', controllers.message.get)
 // POST 用来处理微信转发过来的客服消息
 router.post('/message', controllers.message.post)
 router.get('/demo',controllers.demo)
+// 项目所用接口
 router.post('/addbook',controllers.addbook)
+router.get('/booklist', controllers.booklist)
 
 module.exports = router
