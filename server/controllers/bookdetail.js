@@ -3,9 +3,18 @@ const {mysql} = require('../qcloud')
 module.exports = async (ctx) => {
     const {id} = ctx.request.query
     const detail = await mysql('books')
-                    .select()
-                    .where('id', id)
-                    .first()
+                .select('books.*', 'cSessionInfo.user_info')
+                .join('cSessionInfo', 'books.openid', 'cSessionInfo.open_id')
+                .where('id', id)
+                .first()
+    // user_info为字符串，需要转换
+    const info = JSON.parse(detail.user_info)
+    ctx.state.data = Object.assign({},detail,{
+        user_info: {
+            name: info.nickName,
+            image: info.avatarUrl
+        }
+    })
     ctx.state.data = detail
     await mysql('books')
         .where('id', id)
