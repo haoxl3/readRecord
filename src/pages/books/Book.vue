@@ -42,10 +42,9 @@ export default {
                 this.books = this.books.concat(books.list)
             }
             wx.hideNavigationBarLoading()
-            console.log('books')
-            console.log(books)
         },
         async getTop() {
+            console.log('gettop')
             const tops = await get('/weapp/top')
             this.tops = tops.list
         }
@@ -62,6 +61,7 @@ export default {
         this.getList()
     },
     mounted() {
+        console.log('mounted')
         this.getList(true)
         this.getTop()
     }
