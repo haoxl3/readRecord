@@ -18,11 +18,12 @@
                 <switch color="#EA5A49" :checked="phone" @change="getPhone"></switch>
                 <span class="text-primary">{{phone}}</span>
             </div>
+            <button class="btn" @click="addComment">评论</button>
         </div>
     </div>
 </template>
 <script>
-import {get} from '@/util'
+import {get, post} from '@/util'
 import BookInfo from '@/components/BookInfo'
 export default {
     data() {
@@ -31,7 +32,9 @@ export default {
             info: {},
             comment: '',
             location: '',
-            phone: ''
+            phone: '',
+            userinfo: {},
+            comments: []
         }
     },
     components: {
@@ -81,11 +84,40 @@ export default {
                 //没选中
                 this.phone = ''
             }
+        },
+        async addComment() {
+            if(!this.comment){
+                return 
+            }
+            const data = {
+                openid: this.userinfo.openId,
+                bookid: this.bookid,
+                comment: this.comment,
+                phone: this.phone,
+                location: this.location 
+            }
+            try{
+                await post('/weapp/addcomment', data)
+                this.comment = ''
+                this.getComments()
+            } catch(e) {
+                showModal('失败',e.msg)
+            }
+        },
+        async getComments() {
+            const comments = await get('/weapp/commentlist', {bookid: this.bookid})
+            this.comments = comments.list || []
         }
     },
     mounted() {
         this.bookid = this.$root.$mp.query.id
         this.getDetail()
+        this.getComments()
+        //获取openid
+        const userinfo = wx.getStorageSync('userinfo')
+        if(userinfo){
+            this.userinfo = userinfo
+        }
     }
 }
 </script>
