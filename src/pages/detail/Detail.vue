@@ -2,7 +2,7 @@
     <div>
         <BookInfo :info='info'></BookInfo>
         <comment-list :comments="comments"></comment-list>
-        <div class="comment">
+        <div class="comment" v-if="showAdd">
             <textarea 
                 v-model="comment"
                 class="textarea"
@@ -21,6 +21,10 @@
             </div>
             <button class="btn" @click="addComment">评论</button>
         </div>
+        <div v-else class="text-footer">
+            未登录或者已经评论过啦！
+        </div>
+        <button open-type='share' class="btn">转发给好友</button>
     </div>
 </template>
 <script>
@@ -37,6 +41,19 @@ export default {
             phone: '',
             userinfo: {},
             comments: []
+        }
+    },
+    computed: {
+        showAdd() {
+            // 没登录
+            if(!this.userinfo.openId) {
+                return false 
+            }
+            // 评论页面里查到有自己的openid
+            if(this.comments.filter(v=>v.openid === this.userinfo.openId).length){
+                return false
+            }
+            return true
         }
     },
     components: {
