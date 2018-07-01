@@ -9,7 +9,6 @@ module.exports = async (ctx) => {
     ctx.state.data = {
         list: comments.map(v => {
             const info = JSON.parse(v.user_info)
-
             return Object.assign({}, v, {
                 title: info.nickName,
                 image: info.avatarUrl

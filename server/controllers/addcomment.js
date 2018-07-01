@@ -3,7 +3,7 @@ const {mysql} = require('../qcloud')
 module.exports = async (ctx) => {
     const {bookid, comment, openid, location, phone} = ctx.request.body
     try {
-        await mysql('comments').insert({bookid, comment, openid, location, phone})
+        await mysql('comments').insert({openid, bookid, comment, phone, location})
         ctx.state.data = {
             msg: 'success'
         }

@@ -1,6 +1,7 @@
 <template>
     <div>
         <BookInfo :info='info'></BookInfo>
+        <comment-list :comments="comments"></comment-list>
         <div class="comment">
             <textarea 
                 v-model="comment"
@@ -25,6 +26,7 @@
 <script>
 import {get, post} from '@/util'
 import BookInfo from '@/components/BookInfo'
+import CommentList from '@/components/CommentList'
 export default {
     data() {
         return {
@@ -38,7 +40,8 @@ export default {
         }
     },
     components: {
-        BookInfo
+        BookInfo,
+        CommentList
     },
     methods: {
         async getDetail() {
