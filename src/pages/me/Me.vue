@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <p>openId={{userinfo.openId}}</p>
         <div class="userinfo">
             <img :src="userinfo.avatarUrl" alt="">
             <button open-type="getUserInfo"  @click="getUserInfo" lang="zh_CN">{{userinfo.nickName}}</button>
